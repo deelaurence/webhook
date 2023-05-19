@@ -10,6 +10,7 @@ app.get("/", (req, res) => {
 })
 const crypto = require('crypto');
 const secretKey = process.env.paystack_test_secret_key;
+console.log(secretKey)
 
 function verifyWebhookSignature(headerSignature, requestPayload) {
     const computedSignature = crypto
