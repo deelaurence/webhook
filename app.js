@@ -10,21 +10,21 @@ app.get("/", (req, res) => {
 })
 const crypto = require('crypto');
 const secretKey = process.env.paystack_test_secret_key;
-console.log(secretKey)
+
 
 function verifyWebhookSignature(headerSignature, requestPayload) {
+    // const hash = crypto.createHmac('sha512', secret)
+    //     .update(JSON.stringify(req.body))
+    //     .digest('hex');
     const computedSignature = crypto
         .createHmac('sha512', secretKey)
         .update(requestPayload)
         .digest('hex');
-    console.log("header signature " + headerSignature)
-    console.log("computed signature " + computedSignature)
     return headerSignature === computedSignature;
 }
 app.post('/webhook', (req, res) => {
     // Verify the signature
     const headerSignature = req.headers['x-paystack-signature'];
-    console.log("paystack header signature " + headerSignature)
     const isSignatureValid = verifyWebhookSignature(headerSignature, JSON.stringify(req.body));
     if (!isSignatureValid) {
         res.status(400).send('Invalid signature');
@@ -36,11 +36,11 @@ app.post('/webhook', (req, res) => {
     const eventType = event.event;
     const eventData = event.data;
 
+    console.log(eventData)
     // Handle the event based on the event type
     if (eventType === 'charge.success') {
 
         // save eventData to db
-        console.log(eventData)
     }
     else if (eventType === 'charge.failed') {
         // Handle failed payment event
