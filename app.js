@@ -17,7 +17,8 @@ function verifyWebhookSignature(headerSignature, requestPayload) {
         .createHmac('sha512', secretKey)
         .update(requestPayload)
         .digest('hex');
-    console.log(headerSignature, computedSignature)
+    console.log(headerSignature)
+    console.log(computedSignature)
     return headerSignature === computedSignature;
 }
 app.post('/webhook', (req, res) => {
