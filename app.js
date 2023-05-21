@@ -17,14 +17,14 @@ function verifyWebhookSignature(headerSignature, requestPayload) {
         .createHmac('sha512', secretKey)
         .update(requestPayload)
         .digest('hex');
-    console.log(headerSignature)
-    console.log(computedSignature)
+    console.log("header signature " + headerSignature)
+    console.log("computed signature " + computedSignature)
     return headerSignature === computedSignature;
 }
 app.post('/webhook', (req, res) => {
     // Verify the signature
     const headerSignature = req.headers['paystack-signature'];
-    console.log(headerSignature)
+    console.log("paystack header signature " + headerSignature)
     const isSignatureValid = verifyWebhookSignature(headerSignature, JSON.stringify(req.body));
     if (!isSignatureValid) {
         res.status(400).send('Invalid signature');
