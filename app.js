@@ -23,8 +23,8 @@ function verifyWebhookSignature(headerSignature, requestPayload) {
 }
 app.post('/webhook', (req, res) => {
     // Verify the signature
-    console.log(req.headers)
-    const headerSignature = req.headers.x - paystack - signature;
+    const headerSignature = req.headers['paystack-signature'];
+    console.log(headerSignature)
     const isSignatureValid = verifyWebhookSignature(headerSignature, JSON.stringify(req.body));
     if (!isSignatureValid) {
         res.status(400).send('Invalid signature');
